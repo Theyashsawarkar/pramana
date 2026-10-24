@@ -1,0 +1,19 @@
+[Unit]
+Description=pramana: polkit password prompts for the graphical session
+Documentation=https://github.com/Theyashsawarkar/pramana
+PartOf=graphical-session.target
+After=graphical-session.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -I /usr/local/lib/pramana/agent.py
+Restart=on-failure
+RestartSec=2
+RestartSteps=5
+RestartMaxDelaySec=60
+# 3: another agent already serves this session; don't fight it.
+RestartPreventExitStatus=3
+
+[Install]
+WantedBy=graphical-session.target

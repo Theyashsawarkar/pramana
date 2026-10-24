@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pramana · Your system&#x27;s password prompts, in your desktop&#x27;s look.</title>
+<meta name="description" content="Your system&#x27;s password prompts, in your desktop&#x27;s look.">
+<meta property="og:title" content="pramana · Your system&#x27;s password prompts, in your desktop&#x27;s look.">
+<meta property="og:description" content="Your system&#x27;s password prompts, in your desktop&#x27;s look.">
+<meta name="theme-color" content="#11111b">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>:root{--accent:#f9e2af;--glow:#f9e2af33}</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>pramana <small>प्रमाण</small></span></a>
+<nav><a href="index.html" class="on">Overview</a><a href="changelog.html" class="">Changelog</a><a href="adr/index.html" class=" hide">Decisions</a><a class="gh" href="https://github.com/Theyashsawarkar/pramana">GitHub ↗</a></nav></div></header>
+<section class="hero"><div class="in"><div>
+<div class="eyebrow">polkit agent</div>
+<h1>pramana</h1>
+<div class="sa">प्रमाण <span>· “proof”</span></div>
+<p class="lead">Your system&#x27;s password prompts, in your desktop&#x27;s look.</p>
+<div class="cta"><a class="btn primary" href="#install">Install</a><a class="btn" href="https://github.com/Theyashsawarkar/pramana">GitHub ↗</a>
+<a class="btn" href="changelog.html">What's new in v0.1.0</a></div>
+<div class="meta"><span><b>v0.1.0</b> latest</span><span><b>1</b> releases</span><span><b>3</b> decisions recorded</span><span><b>MIT</b> license</span></div>
+</div><img class="logo" src="assets/logo.svg" alt="pramana logo"></div></section>
+<div class="wrap"><aside class="toc"><b>On this page</b><a class="l2" href="#features">Features</a><a class="l2" href="#install">Install</a><a class="l2" href="#what-you-see">What you see</a><a class="l2" href="#security">Security</a><a class="l2" href="#how-it-works">How it works</a><a class="l2" href="#troubleshooting">Troubleshooting</a><a class="l2" href="#contributing">Contributing</a><a class="l2" href="#license">License</a></aside><article>
+<p align="center">
+  <img alt="The password window: a Password needed pill in the top bar, polkit's message, the action and program, who to authenticate as, the password field with Cancel and Authenticate, and the keys in the footer" src="assets/screenshots/window.png" width="80%">
+</p>
+<blockquote><p><em>Pramāṇa</em> (प्रमाण) is Sanskrit for "proof, means of knowing": the window where you prove it's you.</p></blockquote>
+<p>Apps on Linux ask for admin rights through polkit: mounting a USB drive, changing the time zone, installing an update from a software centre, <code>pkexec</code>. polkit then asks the session's <em>authentication agent</em> to get your password. GNOME and KDE bring one; sway, Hyprland, river and other compositors don't, and without it those requests just fail, often with no message at all. pramana is that agent: a small GTK 4 window that shows polkit's message, what's asking, and takes your password.</p>
+<h2 id="features"><a class="anchor" href="#features">#</a>Features</h2>
+<ul><li><strong>Says who's asking</strong>: polkit's message, the action id (<code>org.freedesktop.udisks2.filesystem-mount</code>) and the program or command line, as polkit reports them.</li><li><strong>Your password goes to polkit only</strong>: to its setuid helper, which checks it with PAM. pramana never stores, logs or passes it on.</li><li><strong>Pick who to authenticate as</strong> when polkit accepts several admins (you first, when you're one).</li><li><strong>Try again</strong> after a wrong password; Esc cancels and the app is told no.</li><li><strong>Looks like your desktop</strong>: <a href="https://github.com/Theyashsawarkar/vyom">Vyom</a>'s panels, in your <a href="https://github.com/Theyashsawarkar/varna">varna</a> theme, the same window style as <a href="https://github.com/Theyashsawarkar/anumati">anumati</a>.</li><li><strong>Always there</strong>: a systemd user service in the graphical session that restarts on failure and steps aside if another agent already runs.</li><li><strong>Root-owned install</strong>: no program running as you can edit the window that takes your password.</li></ul>
+<h2 id="install"><a class="anchor" href="#install">#</a>Install</h2>
+<p>Requirements: Linux with a Wayland or X11 desktop, systemd's user manager, polkit, Python 3.11+, PyGObject, GTK 4 and libadwaita.</p>
+<pre class="code" data-lang="sh"><code>git clone https://github.com/Theyashsawarkar/pramana ~/.local/share/pramana
+~/.local/share/pramana/install.sh          # asks for sudo once
+pkexec true                                # the window opens; authenticate</code></pre>
+<p><code>install.sh</code> installs <code>/usr/local/lib/pramana/</code> and <code>/usr/local/lib/systemd/user/pramana.service</code> <strong>root-owned</strong>, links <code>/usr/local/bin/pramana</code>, and enables the service, which starts with your graphical session (<code>graphical-session.target</code>). On Arch it installs the dependencies too; elsewhere install them first (Debian/Ubuntu: <code>python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 gir1.2-polkit-1.0</code>; Fedora: <code>python3-gobject gtk4 libadwaita polkit-libs</code>).</p>
+<pre class="code" data-lang="sh"><code>~/.local/share/pramana/install.sh --check       # what differs from this clone
+git -C ~/.local/share/pramana pull &amp;&amp; ~/.local/share/pramana/install.sh   # update
+~/.local/share/pramana/install.sh --uninstall</code></pre>
+<p>If your desktop doesn't start <code>graphical-session.target</code>, start it from your compositor's config instead: sway <code>exec systemctl --user start pramana</code>. Remove any other agent you run (<code>polkit-gnome</code>, <code>lxpolkit</code>, <code>hyprpolkitagent</code>): one session has one agent.</p>
+<h2 id="what-you-see"><a class="anchor" href="#what-you-see">#</a>What you see</h2>
+<p>When an app asks, a window opens with polkit's message ("Authentication is required to mount Kingston DataTraveler"), the action and the program, and a password field. Type your password and press Enter. A wrong password says so and lets you try again.</p>
+<div class="table"><table><thead><tr><th>Key</th><th>Action</th></tr></thead><tbody><tr><td><code>Enter</code></td><td>Authenticate with the typed password</td></tr><tr><td><code>Esc</code></td><td>Cancel the request (the app is told no)</td></tr></tbody></table></div>
+<p><code>pramana --preview</code> shows the window with a sample request, without polkit, to check how it looks in your theme.</p>
+<h2 id="security"><a class="anchor" href="#security">#</a>Security</h2>
+<div class="table"><table><thead><tr><th>Guarantee</th><th>How</th></tr></thead><tbody><tr><td>The password goes to polkit only</td><td>It's handed to <code>PolkitAgent.Session</code>, which writes it to polkit's setuid helper (<code>polkit-agent-helper-1</code>), which checks it with PAM. The field is cleared as soon as it's sent; nothing is logged but the action id and the outcome.</td></tr><tr><td>What the window says is what polkit said</td><td>The message, action and program come straight from polkit. The window's code is root-owned in <code>/usr/local</code>, Python runs isolated (<code>-I</code>), and the theme's colours are read as plain <code>#rrggbb</code> only and used only while every text stays readable (<a href="adr/0002-themed-but-never-hidden.html">ADR 2</a>).</td></tr><tr><td>Only your session</td><td>It registers for your graphical session only; polkit itself decides which requests need a password and whose.</td></tr></tbody></table></div>
+<p>What it <strong>can't</strong> do: protect you from a program that is actively malicious and already running as your user. Such a program could draw a lookalike window, or stop the service and register its own agent. That's true of every polkit agent on a Linux desktop. Report security problems privately: <a href="https://github.com/Theyashsawarkar/pramana/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+<h2 id="how-it-works"><a class="anchor" href="#how-it-works">#</a>How it works</h2>
+<ol><li>The <code>pramana</code> user service runs <code>/usr/local/lib/pramana/agent.py</code> in your graphical session. It registers with polkit as the authentication agent for your session (<code>XDG_SESSION_ID</code>, else logind's display session).</li><li>An app asks polkit for an action that needs a password. polkit calls pramana with the message, the action, details about the caller, and the identities it accepts.</li><li>pramana opens the window. You type your password; it starts a <code>PolkitAgent.Session</code> for the chosen identity, which runs polkit's helper and answers its prompt with the password.</li><li>The helper tells polkit whether it worked; polkit grants or refuses the app. Esc, or closing the window, cancels the request.</li></ol>
+<p>Logs: <code>journalctl --user -u pramana</code>.</p>
+<h2 id="troubleshooting"><a class="anchor" href="#troubleshooting">#</a>Troubleshooting</h2>
+<ul><li><strong>No window appears; the app says "not authorized".</strong> Check the service: <code>systemctl --user status pramana</code>. "can't register as the session's polkit agent" means another agent already runs: remove it, then <code>systemctl --user restart pramana</code>.</li><li><strong>The window says the password didn't work, though it's right.</strong> polkit asks for an admin's password: your user must be one (the <code>wheel</code> group on Arch, <code>sudo</code> on Debian), or pick the admin under <em>As</em>.</li><li><strong>The window looks unstyled or tiny.</strong> Install libadwaita; on a tiling compositor, float it: sway <code>for_window [app_id=&quot;^io\.github\.theyashsawarkar\.Pramana$&quot;] floating enable</code>.</li></ul>
+<h2 id="contributing"><a class="anchor" href="#contributing">#</a>Contributing</h2>
+<p>Bug reports, ideas and pull requests are welcome: see <a href="https://github.com/Theyashsawarkar/pramana/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>, and <a href="changelog.html">CHANGELOG.md</a> for what changed in each release. Security reports go privately (<a href="https://github.com/Theyashsawarkar/pramana/blob/main/SECURITY.md">SECURITY.md</a>).</p>
+<p>pramana comes from <a href="https://github.com/Theyashsawarkar/vayu">Vayu</a>, a keyboard-driven Wayland desktop, and works on any Linux desktop without its own polkit agent.</p>
+<h2 id="license"><a class="anchor" href="#license">#</a>License</h2>
+<p><a href="https://github.com/Theyashsawarkar/pramana/blob/main/LICENSE">MIT</a></p>
+</article></div>
+<footer><div class="in"><div><h4>Desktop</h4><a href="https://theyashsawarkar.github.io/vayu/" class="">vayu <span>वायु · the keyboard-driven Wayland desktop</span></a></div><div><h4>Apps</h4><a href="https://theyashsawarkar.github.io/kosha/" class="">kosha <span>कोश · package manager</span></a><a href="https://theyashsawarkar.github.io/nada/" class="">nada <span>नाद · music player</span></a><a href="https://theyashsawarkar.github.io/sangam/" class="">sangam <span>संगम · pull requests in the terminal</span></a><a href="https://theyashsawarkar.github.io/anumati/" class="">anumati <span>अनुमति · root commands for AI agents</span></a><a href="https://theyashsawarkar.github.io/vesha/" class="">vesha <span>वेष · Claude Code accounts</span></a><a href="https://theyashsawarkar.github.io/varna/" class="">varna <span>वर्ण · theme engine</span></a><a href="https://theyashsawarkar.github.io/vinyasa/" class="">vinyasa <span>विन्यास · settings</span></a></div><div><h4>Vyom</h4><a href="https://theyashsawarkar.github.io/vyom/" class="">vyom <span>व्योम · panels runtime</span></a></div><div><h4>Vyom tools</h4><a href="https://theyashsawarkar.github.io/dvara/" class="">dvara <span>द्वार · apps</span></a><a href="https://theyashsawarkar.github.io/ganit/" class="">ganit <span>गणित · calculator</span></a><a href="https://theyashsawarkar.github.io/smriti/" class="">smriti <span>स्मृति · clipboard</span></a><a href="https://theyashsawarkar.github.io/bhava/" class="">bhava <span>भाव · emoji</span></a><a href="https://theyashsawarkar.github.io/tarang/" class="">tarang <span>तरंग · Wi‑Fi</span></a><a href="https://theyashsawarkar.github.io/setu/" class="">setu <span>सेतु · Bluetooth</span></a><a href="https://theyashsawarkar.github.io/doot/" class="">doot <span>दूत · phone</span></a><a href="https://theyashsawarkar.github.io/patra/" class="">patra <span>पात्र · Docker</span></a><a href="https://theyashsawarkar.github.io/suchana/" class="">suchana <span>सूचना · notifications</span></a><a href="https://theyashsawarkar.github.io/raga/" class="">raga <span>राग · YouTube</span></a><a href="https://theyashsawarkar.github.io/mudra/" class="">mudra <span>मुद्रा · keybindings</span></a><a href="https://theyashsawarkar.github.io/urja/" class="">urja <span>ऊर्जा · battery</span></a><a href="https://theyashsawarkar.github.io/vishram/" class="">vishram <span>विश्राम · power menu</span></a><a href="https://theyashsawarkar.github.io/kendra/" class="">kendra <span>केन्द्र · quick settings</span></a></div></div>
+<div class="bottom">pramana is free software under the MIT license · <a href="https://github.com/Theyashsawarkar/pramana">source</a> · <a href="https://github.com/Theyashsawarkar/pramana/issues">issues</a> · <a href="changelog.html">changelog</a> · part of <a href="https://theyashsawarkar.github.io/vayu/">Vayu</a></div></footer>
+<script>
+document.querySelectorAll('pre.code').forEach(p=>{const b=document.createElement('button');b.className='copy';b.textContent='Copy';
+b.onclick=()=>{navigator.clipboard.writeText(p.innerText.replace(/^Copy/,'')).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1200)})};p.appendChild(b)});
+const links=[...document.querySelectorAll('.toc a')];if(links.length){const hs=links.map(a=>document.getElementById(a.hash.slice(1))).filter(Boolean);
+const on=()=>{let cur=hs[0];for(const h of hs){if(h.getBoundingClientRect().top<120)cur=h}links.forEach(a=>a.classList.toggle('on',cur&&a.hash==='#'+cur.id))};
+addEventListener('scroll',on,{passive:true});on()}
+</script>
+</body>
+</html>

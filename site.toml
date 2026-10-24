@@ -1,0 +1,8 @@
+# The project website (docs/, GitHub Pages): built by scripts/build-site.py
+name = "pramana"
+sanskrit = "प्रमाण"
+meaning = "proof"
+tagline = "Your system's password prompts, in your desktop's look."
+color = "yellow"
+kind = "polkit agent"
+logo = "assets/logo.svg"
