@@ -61,6 +61,10 @@ polkit's message, what's asking, and takes your password.
   restarts on failure and steps aside if another agent already runs.
 - **Root-owned install**: no program running as you can edit the window
   that takes your password.
+- **Answer from your phone**: with [ekatva](https://github.com/Theyashsawarkar/ekatva)
+  running, the request also shows on your paired phone; your password typed
+  there goes into this window and on to polkit, exactly as if typed here
+  ([ADR 4](docs/adr/0004-answer-from-the-phone.md)).
 
 ## Install
 
@@ -114,6 +118,7 @@ polkit, to check how it looks in your theme.
 | The password goes to polkit only | It's handed to `PolkitAgent.Session`, which writes it to polkit's setuid helper (`polkit-agent-helper-1`), which checks it with PAM. The field is cleared as soon as it's sent; nothing is logged but the action id and the outcome. |
 | What the window says is what polkit said | The message, action and program come straight from polkit. The window's code is root-owned in `/usr/local`, Python runs isolated (`-I`), and the theme's colours are read as plain `#rrggbb` only and used only while every text stays readable ([ADR 2](docs/adr/0002-themed-but-never-hidden.md)). |
 | Only your session | It registers for your graphical session only; polkit itself decides which requests need a password and whose. |
+| Answering from the phone changes none of this | The phone's answer, over ekatva's end-to-end encrypted link, fills this window's password field and goes the same way. The window sends nothing secret out and finds ekatva by your uid, not the environment ([ADR 4](docs/adr/0004-answer-from-the-phone.md)). |
 
 What it **can't** do: protect you from a program that is actively malicious
 and already running as your user. Such a program could draw a lookalike

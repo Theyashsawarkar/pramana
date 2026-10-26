@@ -51,6 +51,7 @@ fi
 files=(
   "lib/agent.py:$lib/agent.py:755"
   "lib/theme.py:$lib/theme.py:755"
+  "lib/remote.py:$lib/remote.py:644"
   "systemd/pramana.service:$unit:644"
 )
 for entry in "${files[@]}"; do

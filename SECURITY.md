@@ -23,3 +23,10 @@ the service and register its own agent; true of every polkit agent). In
 scope: anything that sends the password anywhere but polkit's helper,
 keeps it, logs it, or lets a theme or the environment hide or fake what the
 window shows.
+
+## Answering from the phone
+
+With ekatva running, a window accepts answers over
+`/run/user/<uid>/ekatva-root.sock` (ADR 4). In scope: anything that makes
+such an answer reach anything but polkit's helper, leaks the password out
+of the window, or authenticates something the window didn't show.

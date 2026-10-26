@@ -7,7 +7,9 @@ it must work on any Linux desktop without its own agent.
 
 - `lib/agent.py` (the agent and its window, GTK 4 / libadwaita, PolkitAgent
   GI), `lib/theme.py` (the look and the palette readability check; the same
-  module as anumati's, keep the two in step), `systemd/pramana.service`.
+  module as anumati's, keep the two in step), `lib/remote.py` (answering
+  from the phone through ekatva; also shared with anumati, keep in step),
+  `systemd/pramana.service`.
   `install.sh` installs them root-owned into `/usr/local`: never make the
   installed copies user-writable or load code from the user's home.
 - Security first: the password goes only to polkit's helper

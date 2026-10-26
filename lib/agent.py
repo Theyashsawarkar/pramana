@@ -33,7 +33,7 @@ gi.require_version("Polkit", "1.0")
 gi.require_version("PolkitAgent", "1.0")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk, Pango, Polkit, PolkitAgent  # noqa: E402
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 APP_ID = "io.github.theyashsawarkar.Pramana"
 OBJECT_PATH = "/io/github/theyashsawarkar/pramana/Agent"
 log = logging.getLogger("pramana")
@@ -50,6 +50,17 @@ def _load_theme_module():
 
 
 THEME = _load_theme_module()
+
+
+def _load_remote_module():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("pramana_remote", os.path.join(os.path.dirname(os.path.realpath(__file__)), "remote.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+REMOTE = _load_remote_module()
 
 EXTRA_CSS = """
 .elevate .mode.auth { background-color: alpha(@warn, 0.15); color: @warn; }
@@ -81,6 +92,8 @@ class PromptWindow(Adw.ApplicationWindow):
         super().__init__(application=app, title="Password needed")
         self.t, self.on_password, self.on_cancel = t, on_password, on_cancel
         self.identities = identities
+        self.remote = None          # the request's line to ekatva (lib/remote.py), if it runs
+        self.attempts = 0
         self.add_css_class("elevate")
         self.set_default_size(560, -1)
         self.connect("close-request", lambda *_: (self.cancel(), True)[1])
@@ -195,6 +208,9 @@ class PromptWindow(Adw.ApplicationWindow):
         self.on_password(self.identity(), pw)
 
     def failed(self, text):
+        self.attempts += 1
+        if self.remote:
+            self.remote.send({"t": "wrong", "attempts": self.attempts})
         self.busy(False)
         self.error.set_label(text)
         self.error.set_visible(True)
@@ -205,6 +221,24 @@ class PromptWindow(Adw.ApplicationWindow):
         if cb:
             cb()
         self.destroy()
+
+    def remote_answer(self, answer):
+        """An answer from the phone: the same as typing it here."""
+        if not self.password.get_sensitive():
+            return False
+        if not answer["approve"]:
+            self.cancel()
+            return False
+        self.password.set_text(answer["password"])
+        answer["password"] = None
+        self.submit()
+        return False
+
+    def done(self, status):
+        if self.remote:
+            self.remote.send({"t": "done", "status": status})
+            self.remote.close()
+            self.remote = None
 
 
 class Agent(PolkitAgent.Listener):
@@ -229,6 +263,7 @@ class Agent(PolkitAgent.Listener):
                 return
             state["done"] = True
             if state["win"] is not None:
+                state["win"].done("completed" if ok else "denied")
                 state["win"].on_cancel = None
                 state["win"].destroy()
             if ok:
@@ -268,6 +303,12 @@ class Agent(PolkitAgent.Listener):
 
         win = PromptWindow(self.app, self.app.theme, message, action_id, info, identities, on_password, on_cancel)
         state["win"] = win
+        # Answerable from the phone too, when ekatva runs.
+        what = info.get("command_line") or info.get("program") or action_id
+        win.remote = REMOTE.Remote.start(
+            {"id": action_id, "via": "polkit", "requester": info.get("program") or action_id,
+             "reason": message or "", "commands": [{"cmd": what, "why": action_id}]},
+            lambda answer: GLib.idle_add(win.remote_answer, answer))
         win.present()
 
     def do_initiate_authentication_finish(self, result):
