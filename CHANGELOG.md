@@ -2,6 +2,13 @@
 
 Newest first. Releases are tags (`vX.Y.Z`) with `VERSION` in `lib/agent.py`.
 
+## v0.2.1 -- 2026-10-28
+
+- `lib/remote.py` in step with anumati 1.4.0's copy: `parse_answer` and
+  `Remote.start` take an optional `root` (the requests that need the
+  password; anumati's commands that run as you don't). pramana doesn't
+  pass it, so every answer still needs the password: no change here.
+
 ## v0.2.0 -- 2026-10-26
 
 - Answer from your phone: when [ekatva](https://github.com/Theyashsawarkar/ekatva)

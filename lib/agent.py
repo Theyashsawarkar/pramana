@@ -33,7 +33,7 @@ gi.require_version("Polkit", "1.0")
 gi.require_version("PolkitAgent", "1.0")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk, Pango, Polkit, PolkitAgent  # noqa: E402
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 APP_ID = "io.github.theyashsawarkar.Pramana"
 OBJECT_PATH = "/io/github/theyashsawarkar/pramana/Agent"
 log = logging.getLogger("pramana")
