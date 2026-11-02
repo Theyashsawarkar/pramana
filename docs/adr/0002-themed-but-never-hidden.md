@@ -9,10 +9,10 @@ A password window should look like the rest of the desktop, or people learn to d
 
 ## Decision
 
-pramana uses anumati's theme module (`lib/theme.py`, the same code): Vyom's layout, and the palette's colours read as data, plain `#rrggbb` only, never as CSS. The palette is used only if the text is readable (4.5:1) on every surface it's drawn on, else pramana's own colours; status colours that aren't readable are replaced by the text colour. The installed code is root-owned and runs with `python -I`, loading the theme module by path from its own directory.
+pramana uses dvarapala's theme module (`lib/theme.py`, the same code): Vyom's layout, and the palette's colours read as data, plain `#rrggbb` only, never as CSS. The palette is used only if the text is readable (4.5:1) on every surface it's drawn on, else pramana's own colours; status colours that aren't readable are replaced by the text colour. The installed code is root-owned and runs with `python -I`, loading the theme module by path from its own directory.
 
 ## Consequences
 
 - A tampered palette can change tints, never hide what's asking.
-- The two password windows on the desktop, pramana's and anumati's, look alike; a fix to the theme module goes to both repos.
+- The two password windows on the desktop, pramana's and dvarapala's, look alike; a fix to the theme module goes to both repos.
 - The checks are pure Python and tested in CI without GTK.

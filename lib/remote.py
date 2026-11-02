@@ -1,5 +1,5 @@
 """Answering from the phone, through ekatva (github.com/Theyashsawarkar/ekatva).
-The same module as anumati's: keep the two in step.
+The same module as dvarapala's: keep the two in step.
 
 When ekatva runs, its socket is /run/user/<uid>/ekatva-root.sock. The
 window hands it the request (what it shows, nothing more); ekatva shows it
@@ -29,7 +29,7 @@ def parse_answer(line, n_commands, root=None):
 
     {"approve": bool, "allow": [indexes], "password": str|None}
 
-    `root`: the indexes of the commands that need the password (anumati's
+    `root`: the indexes of the commands that need the password (dvarapala's
     "as": "root"; None means all of them). Approving only the others needs
     no password, and any password sent with them is dropped.
     """

@@ -7,15 +7,15 @@ it must work on any Linux desktop without its own agent.
 
 - `lib/agent.py` (the agent and its window, GTK 4 / libadwaita, PolkitAgent
   GI), `lib/theme.py` (the look and the palette readability check; the same
-  module as anumati's, keep the two in step), `lib/remote.py` (answering
-  from the phone through ekatva; also shared with anumati, keep in step),
+  module as dvarapala's, keep the two in step), `lib/remote.py` (answering
+  from the phone through ekatva; also shared with dvarapala, keep in step),
   `systemd/pramana.service`.
   `install.sh` installs them root-owned into `/usr/local`: never make the
   installed copies user-writable or load code from the user's home.
 - Security first: the password goes only to polkit's helper
   (`PolkitAgent.Session.response`); never log, store or pass it elsewhere.
   Read SECURITY.md before changing the flow.
-- Not anumati: anumati is the approval window for AI agents' root commands.
+- Not dvarapala: dvarapala is the approval window for AI agents' root commands.
   Don't merge the two.
 - Keys: `# keybind: Pramana/password prompt | <keys> | <Verb> ...` in
   `lib/agent.py`'s header, and a README row (CI checks).

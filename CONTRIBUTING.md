@@ -26,7 +26,7 @@ request: `pkexec true`.
   window, and hands the typed password to a `PolkitAgent.Session`, which
   passes it to polkit's setuid helper.
 - `lib/theme.py`: the look, and the check that a varna palette keeps
-  everything readable (shared with anumati).
+  everything readable (shared with dvarapala).
 - `systemd/pramana.service`: runs the agent in the graphical session.
 - `install.sh`: installs them root-owned.
 

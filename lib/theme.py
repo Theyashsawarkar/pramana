@@ -1,6 +1,6 @@
 """pramana's look: Vyom's visual language in the user's varna theme, but
 only while every text stays readable. Pure Python (no GTK), the same module
-as anumati's approval window (github.com/Theyashsawarkar/anumati), so both
+as dvarapala's approval window (github.com/Theyashsawarkar/dvarapala), so both
 password windows look alike; installed root-owned next to agent.py and
 loaded by path, never from the user's home."""
 import json

@@ -56,7 +56,7 @@ polkit's message, what's asking, and takes your password.
 - **Try again** after a wrong password; Esc cancels and the app is told no.
 - **Looks like your desktop**: [Vyom](https://github.com/Theyashsawarkar/vyom)'s
   panels, in your [varna](https://github.com/Theyashsawarkar/varna) theme,
-  the same window style as [anumati](https://github.com/Theyashsawarkar/anumati).
+  the same window style as [dvarapala](https://github.com/Theyashsawarkar/dvarapala).
 - **Always there**: a systemd user service in the graphical session that
   restarts on failure and steps aside if another agent already runs.
 - **Root-owned install**: no program running as you can edit the window
