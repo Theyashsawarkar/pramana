@@ -2,6 +2,10 @@
 
 Newest first. Releases are tags (`vX.Y.Z`) with `VERSION` in `lib/agent.py`.
 
+## Unreleased
+
+- A logo and a shloka at the top of the README and the website: every Vayu tool has them now.
+
 ## v0.2.1 -- 2026-10-28
 
 - `lib/remote.py` in step with anumati 1.4.0's copy: `parse_answer` and

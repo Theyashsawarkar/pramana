@@ -6,6 +6,15 @@
   </picture>
 </p>
 
+<!-- identity -->
+<p align="center">
+  <b>तस्माच्छास्त्रं प्रमाणं ते कार्याकार्यव्यवस्थितौ ।<br>
+  ज्ञात्वा शास्त्रविधानोक्तं कर्म कर्तुमिहार्हसि ॥</b><br>
+  <i>So let scripture be your authority for what should and should not be done; know what it prescribes, then act.</i><br>
+  <sub>Bhagavad Gītā 16.24</sub>
+</p>
+<!-- /identity -->
+
 <p align="center">
   <b>Your system's password prompts, in your desktop's look.</b><br>
   A polkit agent for desktops that don't bring one: when an app needs admin rights, a window asks, and says who's asking and why.
