@@ -17,8 +17,11 @@ it must work on any Linux desktop without its own agent.
   Read SECURITY.md before changing the flow.
 - Not dvarapala: dvarapala is the approval window for AI agents' root commands.
   Don't merge the two.
-- Keys: `# keybind: Pramana/password prompt | <keys> | <Verb> ...` in
-  `lib/agent.py`'s header, and a README row (CI checks).
+- Keys are data (`PROMPT_KEYS` in `lib/agent.py`, resolved by Vyom's keys
+  module, vendored as `lib/keys.py`: never edit it here, run Vyom's
+  `scripts/vendor-keys.sh lib/keys.py`). After changing a key run
+  `scripts/keybinds.py`: it writes the `# keybind:` lines and the README table
+  (CI checks both). Insert mode only, no leader: it's a password prompt.
 - Every change: a CHANGELOG.md entry; releases are tags with `VERSION` in
   `lib/agent.py` bumped. `python -m py_compile lib/*.py`,
   `python -m unittest discover -s tests` and `shellcheck install.sh` must pass.

@@ -10,6 +10,7 @@
 # Installs:
 #   /usr/local/lib/pramana/agent.py               the polkit agent (GTK 4)
 #   /usr/local/lib/pramana/theme.py               its look and the theme readability check
+#   /usr/local/lib/pramana/keys.py                its keys (Vyom's keys module, vendored)
 #   /usr/local/bin/pramana                        -> agent.py
 #   /usr/local/lib/systemd/user/pramana.service   runs it in your graphical session
 set -euo pipefail
@@ -52,6 +53,7 @@ files=(
   "lib/agent.py:$lib/agent.py:755"
   "lib/theme.py:$lib/theme.py:755"
   "lib/remote.py:$lib/remote.py:644"
+  "lib/keys.py:$lib/keys.py:644"
   "systemd/pramana.service:$unit:644"
 )
 for entry in "${files[@]}"; do

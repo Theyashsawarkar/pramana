@@ -2,10 +2,19 @@
 
 Newest first. Releases are tags (`vX.Y.Z`) with `VERSION` in `lib/agent.py`.
 
-## Unreleased
+## v0.3.0 -- 2026-11-09
 
 - Every corner is rounded: the website's callouts.
 - A logo and a shloka at the top of the README and the website: every Vayu tool has them now.
+
+- `Ctrl+j` / `Ctrl+k` change who you authenticate as (when polkit offers
+  several) without leaving the password field: the identity menu used to
+  need Tab and the arrow keys. The same keys move a list from a search box
+  in every Vayu tool.
+- The footer shows the mode (INSERT: the prompt only types).
+- The keys are data, resolved by Vyom's keys module (`lib/keys.py`,
+  vendored, installed root-owned with the rest); `scripts/keybinds.py`
+  writes the `# keybind:` lines and the README table, and CI checks them.
 
 ## v0.2.1 -- 2026-10-28
 
